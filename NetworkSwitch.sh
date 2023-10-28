@@ -47,7 +47,4 @@ if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp
 	route add default gw $default_route metric 0
 	sleep 10s
   fi
-else
-	echo "Total Disconnected , wait 10 second to retry"
-	sleep 10s
 fi
