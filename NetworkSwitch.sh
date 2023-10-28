@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Define Network
 eth_interface="eth0"
 modem_interface="ppp0"
 check_current_interface_1=$(route | grep '^default' | grep -o '[^ ]*$')
