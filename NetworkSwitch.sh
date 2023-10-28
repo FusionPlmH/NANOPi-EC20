@@ -1,17 +1,14 @@
 #!/bin/bash
 
-eth_interface="eth0"
-modem_interface="ppp0"
 check_current_interface_1=$(route | grep '^default' | grep -o '[^ ]*$')
 check_current_interface_2=$(route | awk '/^default/{print $NF}')
-default_route=$(cat wire_network_gateway.txt)
-google_wired=$(ping -I $eth_interface -c 3 google.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-baidu_wired=$(ping -I $eth_interface -c 3 baidu.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-cloudflare_wired=$(ping -I $eth_interface -c 3 cloudflare.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+google_wired=$(ping -I eth0 -c 3 google.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+baidu_wired=$(ping -I eth0 -c 3 baidu.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+cloudflare_wired=$(ping -I eth0 -c 3 cloudflare.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 
-google_modem=$(ping -I $modem_interface -c 3 google.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-baidu_modem=$(ping -I $modem_interface -c 3 baidu.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-cloudflare_modem=$(ping -I $modem_interface -c 3 cloudflare.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+google_modem=$(ping -I "ppp0" -c 3 google.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+baidu_modem=$(ping -I "ppp0" -c 3 baidu.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+cloudflare_modem=$(ping -I "ppp0" -c 3 cloudflare.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 
 
 
@@ -21,7 +18,7 @@ ifmetric ppp0 110
 
 
 # Wired Network Connection Checking
-if [ $check_current_interface_1 == $eth_interface || $check_current_interface_2 == $eth_interface ]; then
+if [ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]; then
   echo "Wired Network Selected"
   if [ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]; then
 	echo "Wired External Network connect Successfully , check in 10s later"
@@ -37,7 +34,7 @@ if [ $check_current_interface_1 == $eth_interface || $check_current_interface_2 
 	sleep 10s
 
 # Mobile Network Connection Checking
-elif [ $check_current_interface_1 == $modem_interface || $check_current_interface_2 == $modem_interface ]; then
+elif [ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]; then
   echo "Mobile Network Selected"
   ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
   if [ $google_modem == 3 || $baidu_modem == 3 || $cloudflare_modem == 3 ]; then
@@ -50,6 +47,7 @@ elif [ $check_current_interface_1 == $modem_interface || $check_current_interfac
 	route del default
 	route del default
 	route del default
+        default_route=$(cat wire_network_gateway.txt)
 	route add default gw $default_route metric 0
 	sleep 10s
 	
