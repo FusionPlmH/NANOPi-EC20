@@ -13,6 +13,7 @@ Setup NetworkSwitch for failover ：</br>
 3. Setup Crontab : ```crontab -e```
 4. Add the following into crontab: ```* * * * * /etc/NetworkSwitch.sh```
 5. exit and save and run : ```/etc/init.d/cron restart```
+6. Check Script Running log :  ```cat /etc/networkswitch.log ```
 
    
 Reference link :
