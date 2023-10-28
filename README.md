@@ -13,6 +13,8 @@ Setup NetworkSwitch for failover ：</br>
 3. Setup Crontab : ```crontab -e```
 4. Add the following into crontab: ```* * * * * /etc/NetworkSwitch.sh```
 5. exit and save and run : ```/etc/init.d/cron restart```
+
+   
 Reference link :
 
 https://wiki.friendlyelec.com/wiki/index.php/How_to_use_4G_Module_on_Debian
