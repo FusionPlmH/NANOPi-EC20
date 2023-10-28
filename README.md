@@ -12,7 +12,7 @@ Setup NetworkSwitch for failover ：</br>
 2. Download Script : ```wget --no-check-certificate -t 1 -T 10 -q -P /etc https://raw.githubusercontent.com/FusionPlmH/NANOPi-EC20/main/NetworkSwitch.sh && chmod a+x /etc/NetworkSwitch.sh```
 3. Setup Crontab : ```crontab -e```
 4. Add the following into crontab: ```* * * * * /etc/NetworkSwitch.sh```
-5. exit and save and run : ```/etc/init.d/cron restart```
+5. exit and save and run : ```service cron restart```
 6. Check Script Running log :  ```cat /etc/networkswitch.log ```
 
    
