@@ -1,7 +1,7 @@
 sudo -s
-sed -i -e '# Startup 4G command' /etc/rc.local
-sed -i -e 'sleep 10s  ' /etc/rc.local
-sed -i -e 'sudo pppd call quectel-pppd' /etc/rc.local
+echo "# Startup 4G command" >> /etc/rc.local
+echo "sleep 10s" >> etc/rc.local
+echo "sudo pppd call quectel-pppd" >> /etc/rc.local
 wget --no-check-certificate -t 1 -T 10 -q -P /etc/ppp/peers https://raw.githubusercontent.com/FusionPlmH/NANOPi-EC20/main/quectel-chat-connect
 wget --no-check-certificate -t 1 -T 10 -q -P /etc/ppp/peers https://raw.githubusercontent.com/FusionPlmH/NANOPi-EC20/main/quectel-pppd
 wget --no-check-certificate -t 1 -T 10 -q -P /etc/ppp/peers https://raw.githubusercontent.com/FusionPlmH/NANOPi-EC20/main/quectel-chat-disconnect
