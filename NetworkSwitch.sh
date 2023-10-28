@@ -11,15 +11,15 @@ cloudflare_modem=$(ping -I "ppp0" -c 3 cloudflare.com | grep 'received' | awk '{
 ifmetric eth0 100
 ifmetric ppp0 110
 # Wired Network Connection Checking
-if [ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]; then
+if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]]; then
   echo "Wired Network Selected"
-  if [ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]; then
+  if [[ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]]; then
 	echo "Wired External Network connect Successfully , check in 10s later"
 	sleep 10s
 	rm -rf /etc/wire_network_gateway.txt
 	ip route show default | awk '/default/ {print $3}' >/etc/wire_network_gateway.txt
   fi
-  if [ $google_wired != 3  || $baidu_wired != 3 || $cloudflare_wired != 3 ]; then
+  if [[ $google_wired != 3  || $baidu_wired != 3 || $cloudflare_wired != 3 ]]; then
     echo "External Network Unreachable ， Switching to Mobile Network"
 	route del default
 	route del default
@@ -29,16 +29,16 @@ if [ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0
   fi
 fi
 # Mobile Network Connection Checking
-if [ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]; then
+if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]]; then
   echo "Mobile Network Selected"
   ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
-  if [ $google_modem == 3 || $baidu_modem == 3 || $cloudflare_modem == 3 ]; then
+  if [[ $google_modem == 3 || $baidu_modem == 3 || $cloudflare_modem == 3 ]]; then
 	echo "Mobile External Network connect Successfully , check in 10s later"
 	sleep 10s
 	rm -rf /etc/wire_network_gateway.txt
 	ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
   fi
-  if [ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]; then
+  if [[ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]]; then
     echo "Wired External Network Connected ， Switching Back"
 	route del default
 	route del default
