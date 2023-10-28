@@ -14,7 +14,7 @@ ifmetric ppp0 110
 if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]]; then
   echo "Wired Network Selected"
   if [[ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]]; then
-	echo "Wired External Network connect Successfully , check in 10s later"
+	echo "Wired External Network connect Successfully , auto check it again later"
 	sleep 10s
 	rm -rf /etc/wire_network_gateway.txt
 	ip route show default | awk '/default/ {print $3}' >/etc/wire_network_gateway.txt
