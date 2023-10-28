@@ -1,4 +1,3 @@
-sudo -s
 sed -i '/exit 0/d' /etc/rc.local
 echo "# Startup 4G command" >> /etc/rc.local
 echo "sleep 10s" >> /etc/rc.local
