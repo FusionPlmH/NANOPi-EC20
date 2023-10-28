@@ -32,6 +32,7 @@ if [ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0
 	route del default
 	route add default ppp0 
 	sleep 10s
+  fi
 
 # Mobile Network Connection Checking
 elif [ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]; then
@@ -42,7 +43,7 @@ elif [ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "pp
 	sleep 10s
 	rm -rf /etc/wire_network_gateway.txt
 	ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
-  if [ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]; then
+  elif [ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]; then
     echo "Wired External Network Connected ， Switching Back"
 	route del default
 	route del default
@@ -50,6 +51,7 @@ elif [ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "pp
         default_route=$(cat wire_network_gateway.txt)
 	route add default gw $default_route metric 0
 	sleep 10s
+  fi
 	
 else
 	echo "Total Disconnected , wait 10 second to retry"
