@@ -12,15 +12,15 @@ ifmetric eth0 100
 ifmetric ppp0 110
 # Wired Network Connection Checking
 if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]]; then
-  echo "Wired Network Selected"
+  echo "Wired Network Selected" >> /etc/networkswitch.log
   if [[ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]]; then
-	echo "Wired External Network connect Successfully , auto check it again later"
+	echo "Wired External Network connect Successfully , auto check it again later" >> /etc/networkswitch.log
 	sleep 10s
 	rm -rf /etc/wire_network_gateway.txt
 	ip route show default | awk '/default/ {print $3}' >/etc/wire_network_gateway.txt
   fi
   if [[ $google_wired != 3  || $baidu_wired != 3 || $cloudflare_wired != 3 ]]; then
-    echo "External Network Unreachable ， Switching to Mobile Network"
+    echo "External Network Unreachable ， Switching to Mobile Network" >> /etc/networkswitch.log
 	route del default
 	route del default
 	route del default
@@ -30,16 +30,16 @@ if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth
 fi
 # Mobile Network Connection Checking
 if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]]; then
-  echo "Mobile Network Selected"
+  echo "Mobile Network Selected" >> /etc/networkswitch.log
   ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
   if [[ $google_modem == 3 || $baidu_modem == 3 || $cloudflare_modem == 3 ]]; then
-	echo "Mobile External Network connect Successfully , check in 10s later"
+	echo "Mobile External Network connect Successfully , check in 10s later" >> /etc/networkswitch.log
 	sleep 10s
 	rm -rf /etc/wire_network_gateway.txt
 	ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
   fi
   if [[ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]]; then
-    echo "Wired External Network Connected ， Switching Back"
+    echo "Wired External Network Connected ， Switching Back" >> /etc/networkswitch.log
 	route del default
 	route del default
 	route del default
