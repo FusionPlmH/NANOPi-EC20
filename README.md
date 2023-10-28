@@ -1,6 +1,6 @@
 # NANOPi-EC20
 
-**Please Edit quectel-chat-connect ， line 11 before you go . My APN setting is :internet . **
+**Please Edit quectel-chat-connect , line 11 before you go. My APN setting is :internet . **
 
 Copy this Command paste it in your terminal and run ：</br>
 ```
