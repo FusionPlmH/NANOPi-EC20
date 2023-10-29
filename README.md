@@ -6,7 +6,7 @@ Setup EC20 For Connect , script will auto reboot ：</br>
 ```
 sudo wget --no-check-certificate -t 1 -T 10 -q https://raw.githubusercontent.com/FusionPlmH/NANOPi-EC20/main/ec20setup.sh && bash ./ec20setup.sh
 ```
-
+# Method 1 ：
 Setup failover network(In simple) ：
 1. Install ifmetric : ```sudo apt install ifmetric ```
 2. Add default route for EC20 Network : ```route add default ppp0```
@@ -16,6 +16,7 @@ Setup failover network(In simple) ：
 Once the Eth0 has been reconnected , we should set back the priority :```ifmetric eth0 0```
 
 
+# Method 2：
 Unstable NetworkSwitch for failover(In Advance, under testing) ：</br>
 1. Install Crontab : ```sudo apt install cron ```
 2. Download Script : ```wget --no-check-certificate -t 1 -T 10 -q -P /etc https://raw.githubusercontent.com/FusionPlmH/NANOPi-EC20/main/NetworkSwitch.sh && chmod a+x /etc/NetworkSwitch.sh```
