@@ -7,9 +7,6 @@ cloudflare_wired=$(ping -I eth0 -c 3 cloudflare.com | grep 'received' | awk '{pr
 google_modem=$(ping -I "ppp0" -c 3 google.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 baidu_modem=$(ping -I "ppp0" -c 3 baidu.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 cloudflare_modem=$(ping -I "ppp0" -c 3 cloudflare.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-# Set Metric of different network
-ifmetric eth0 100
-ifmetric ppp0 110
 # Wired Network Connection Checking
 if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]]; then
   echo "Wired Network Selected" >> /etc/networkswitch.log
