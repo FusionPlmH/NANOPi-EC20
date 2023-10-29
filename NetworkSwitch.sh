@@ -16,9 +16,8 @@ if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth
 	sleep 5s
  	rm -rf /etc/wire_network_gateway.txt
 	ip route show default | awk '/default/ {print $3}' >/etc/wire_network_gateway.txt
-  fi
-  if [[ $google_wired != 3  || $ali_wired != 3 || $cloudflare_wired != 3 ]]; then
-    echo "External Network Unreachable ， Switching to Mobile Network" >> /etc/networkswitch.log
+  else
+    	echo "External Network Unreachable ， Switching to Mobile Network" >> /etc/networkswitch.log
  	route add default ppp0
   	route del default eth0
   	ifmetric eth0 100
