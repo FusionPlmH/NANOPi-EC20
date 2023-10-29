@@ -7,6 +7,9 @@ cloudflare_wired=$(ping -I eth0 -c 3 1.1.1.1 | grep 'received' | awk '{print $4}
 google_modem=$(ping -I "ppp0" -c 3 8.8.8.8 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 114_wired=$(ping -I eth0 -c 3 114.114.114.114 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 cloudflare_modem=$(ping -I "ppp0" -c 3 1.1.1.1 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+
+while true
+do
 # Wired Network Connection Checking
 if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]]; then
   echo "Wired Network Selected" >> /etc/networkswitch.log
@@ -20,6 +23,7 @@ if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth
 	ifmetric ppp0 0
   fi
 fi
+
 # Mobile Network Connection Checking
 if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]]; then
   echo "Mobile Network Selected" >> /etc/networkswitch.log
@@ -35,3 +39,4 @@ if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp
 	sleep 10s
   fi
 fi
+done
