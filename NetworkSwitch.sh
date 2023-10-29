@@ -37,3 +37,5 @@ if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp
   fi
 fi
 
+sleep 20s
+systemctl restart NetworkSwitch
