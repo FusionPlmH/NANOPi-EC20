@@ -26,11 +26,10 @@ fi
 # Mobile Network Connection Checking
 if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]]; then
   echo "Mobile Network Selected" >> /etc/networkswitch.log
-  ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
   if [[ $google_modem == 3 || $ali_modem == 3 || $cloudflare_modem == 3 ]]; then
 	echo "Mobile External Network Connect Successfully , Check Wired Network" >> /etc/networkswitch.log
   fi
-  if [[ $google_wired == 3 || $cndns_wired == 3 || $cloudflare_wired == 3 ]]; then
+  if [[ $google_wired == 3 || $ali_wired == 3 || $cloudflare_wired == 3 ]]; then
     echo "Wired External Network Connected , Switching Back" >> /etc/networkswitch.log
 	ifmetric eth0 0
 	ifmetric ppp0 100
