@@ -13,14 +13,11 @@ if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth
   if [[ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]]; then
 	echo "Wired External Network connect Successfully , auto check it again later" >> /etc/networkswitch.log
 	sleep 10s
-	rm -rf /etc/wire_network_gateway.txt
-	ip route show default | awk '/default/ {print $3}' >/etc/wire_network_gateway.txt
   fi
   if [[ $google_wired != 3  || $baidu_wired != 3 || $cloudflare_wired != 3 ]]; then
     echo "External Network Unreachable ， Switching to Mobile Network" >> /etc/networkswitch.log
-	route del default
-	route add default ppp0 
-	sleep 10s
+	ifmetric eth0 100
+	ifmetric ppp0 0
   fi
 fi
 # Mobile Network Connection Checking
@@ -30,14 +27,11 @@ if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp
   if [[ $google_modem == 3 || $baidu_modem == 3 || $cloudflare_modem == 3 ]]; then
 	echo "Mobile External Network connect Successfully , check in 10s later" >> /etc/networkswitch.log
 	sleep 10s
-	rm -rf /etc/wire_network_gateway.txt
-	ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
   fi
   if [[ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]]; then
     echo "Wired External Network Connected ， Switching Back" >> /etc/networkswitch.log
-	route del default
-        default_route=$(cat wire_network_gateway.txt)
-	route add default gw $default_route metric 0
+	ifmetric eth0 0
+	ifmetric ppp0 100
 	sleep 10s
   fi
 fi
