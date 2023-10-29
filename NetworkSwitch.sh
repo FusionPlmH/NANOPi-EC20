@@ -8,43 +8,29 @@ google_modem=$(ping -I "ppp0" -c 3 8.8.8.8 | grep 'received' | awk '{print $4}' 
 ali_modem=$(ping -I eth0 -c 3 223.5.5.5 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 cloudflare_modem=$(ping -I "ppp0" -c 3 1.1.1.1 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 
-# Wired Network Connection Checking
+# Wired Mobile Network Connection Checking
 if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]]; then
-  echo "Wired Network Selected" >> /etc/networkswitch.log
+  echo "Wired Network Detected" >> /etc/networkswitch.log
   if [[ $google_wired == 3 || $ali_wired == 3 || $cloudflare_wired == 3 ]]; then
 	echo "Wired External Network connect Successfully , auto check it again later" >> /etc/networkswitch.log
- 	rm -rf /etc/wire_network_gateway.txt
-	ip route show default | awk '/default/ {print $3}' >/etc/wire_network_gateway.txt
   else
-    	echo "External Network Unreachable ， Switching to Mobile Network" >> /etc/networkswitch.log
- 	route add default ppp0
- 	ifmetric ppp0 0
-  	route del default eth0
-  	ifmetric eth0 100
- 	sleep 5s
+    	echo "External Network Unreachable ， Checking Mobile Network Status" >> /etc/networkswitch.log
+     	if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]]; then
+  		echo "Mobile Network Detected" >> /etc/networkswitch.log
+  		if [[ $google_modem == 3 || $ali_modem == 3 || $cloudflare_modem == 3 ]]; then
+			echo "Mobile External Network Connect Successfully , Check Wired Network" >> /etc/networkswitch.log
+  			if [[ $google_wired == 3 || $ali_wired == 3 || $cloudflare_wired == 3 ]]; then
+    				echo "Wired External Network Connected , Switching Back" >> /etc/networkswitch.log
+				ifmetric eth0 0
+				ifmetric ppp0 100
+  			else
+     				ifmetric ppp0 0
+       				ifmetric eth0 100
+   			fi
+  		fi
+	fi
   fi
 fi
-
-# Mobile Network Connection Checking
-if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]]; then
-  echo "Mobile Network Selected" >> /etc/networkswitch.log
-  if [[ $google_modem == 3 || $ali_modem == 3 || $cloudflare_modem == 3 ]]; then
-  	rm -rf /etc/mobile_network_gateway.txt
-	ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
-	echo "Mobile External Network Connect Successfully , Check Wired Network" >> /etc/networkswitch.log
-	route add default gw $default_wireroute metric 0
-  	sleep 5s
-  	if [[ $google_wired == 3 || $ali_wired == 3 || $cloudflare_wired == 3 ]]; then
-    		echo "Wired External Network Connected , Switching Back" >> /etc/networkswitch.log
- 		route del default ppp0
-		ifmetric eth0 0
-		ifmetric ppp0 100
-  	else
-   		route del default eht0
-   	fi
-  fi
-fi
-
 echo "Complete Time: $(date) , will run this script 5 second later " >> /etc/networkswitch.log
 sleep 5s
 systemctl restart NetworkSwitch
