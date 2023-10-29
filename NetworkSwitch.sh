@@ -5,7 +5,7 @@ google_wired=$(ping -I eth0 -c 3 8.8.8.8 | grep 'received' | awk '{print $4}' | 
 114_wired=$(ping -I eth0 -c 3 114.114.114.114 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 cloudflare_wired=$(ping -I eth0 -c 3 1.1.1.1 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 google_modem=$(ping -I "ppp0" -c 3 8.8.8.8 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-114_wired=$(ping -I eth0 -c 3 114.114.114.114 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+114_modem=$(ping -I eth0 -c 3 114.114.114.114 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 cloudflare_modem=$(ping -I "ppp0" -c 3 1.1.1.1 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 
 while true
@@ -13,11 +13,11 @@ do
 # Wired Network Connection Checking
 if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]]; then
   echo "Wired Network Selected" >> /etc/networkswitch.log
-  if [[ $google_wired == 3 || $baidu_wired == 3 || $cloudflare_wired == 3 ]]; then
+  if [[ $google_wired == 3 || $114_wired == 3 || $cloudflare_wired == 3 ]]; then
 	echo "Wired External Network connect Successfully , auto check it again later" >> /etc/networkswitch.log
 	sleep 10s
   fi
-  if [[ $google_wired != 3  || $baidu_wired != 3 || $cloudflare_wired != 3 ]]; then
+  if [[ $google_wired != 3  || $114_wired != 3 || $cloudflare_wired != 3 ]]; then
     echo "External Network Unreachable ， Switching to Mobile Network" >> /etc/networkswitch.log
 	ifmetric eth0 100
 	ifmetric ppp0 0
@@ -28,7 +28,7 @@ fi
 if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]]; then
   echo "Mobile Network Selected" >> /etc/networkswitch.log
   ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
-  if [[ $google_modem == 3 || $baidu_modem == 3 || $cloudflare_modem == 3 ]]; then
+  if [[ $google_modem == 3 || $114_modem == 3 || $cloudflare_modem == 3 ]]; then
 	echo "Mobile External Network connect Successfully , check in 10s later" >> /etc/networkswitch.log
 	sleep 10s
   fi
