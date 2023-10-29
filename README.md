@@ -22,8 +22,6 @@ Unstable NetworkSwitch for failover(In Advance, under testing) ：</br>
 2. Patse those into text and save it :
 ```[Unit]
 Description=NetworkSwitch
-After=local-fs.target
-Before=serial-getty@.service
 [Service]
 Type=simple
 Restart=always
