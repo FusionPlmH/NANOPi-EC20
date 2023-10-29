@@ -13,6 +13,8 @@ if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth
   echo "Wired Network Detected" >> /etc/networkswitch.log
   if [[ $google_wired == 3 || $ali_wired == 3 || $cloudflare_wired == 3 ]]; then
 	echo "Wired External Network connect Successfully , auto check it again later" >> /etc/networkswitch.log
+ 	ifmetric ppp0 0
+       	ifmetric eth0 100
   else
     	echo "External Network Unreachable ， Checking Mobile Network Status" >> /etc/networkswitch.log
      	if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp0" ]]; then
@@ -23,14 +25,11 @@ if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth
     				echo "Wired External Network Connected , Switching Back" >> /etc/networkswitch.log
 				ifmetric eth0 0
 				ifmetric ppp0 100
-  			else
-     				ifmetric ppp0 0
-       				ifmetric eth0 100
    			fi
   		fi
 	fi
   fi
 fi
 echo "Complete Time: $(date) , will run this script 5 second later " >> /etc/networkswitch.log
-sleep 5s
+sleep 2s
 systemctl restart NetworkSwitch
