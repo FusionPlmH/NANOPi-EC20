@@ -16,7 +16,7 @@ if [[ $check_current_interface_1 -eq "eth0" || $check_current_interface_2 -eq "e
 		ifmetric ppp0 100
   	fi
 else
-	if [[ $google_modem -eq 3 || $ali_modem -eq 3 || $cloudflare_modem -eq 3 ] ; then
+	if [[ $google_modem -eq 3 || $ali_modem -eq 3 || $cloudflare_modem -eq 3 ]] ; then
  		if [[ $google_wired -ne 3 | $ali_wired -ne 3 | $cloudflare_wired -ne 3 ]]; then
        			echo "Mobile External Network connect Successfully and in use , Fix Wired Network Connection ASAP! " >> /etc/networkswitch.log
 	   		ifmetric eth0 100
