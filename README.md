@@ -25,8 +25,7 @@ Description=NetworkSwitch
 After=local-fs.target
 Before=serial-getty@.service
 [Service]
-Type=oneshot
-RemainAfterExit=yes
+Type=simple
 Restart=always
 RestartSec=60s
 ExecStart=/bin/bash /etc/NetworkSwitch.sh
