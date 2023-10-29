@@ -18,12 +18,25 @@ Once the Eth0 has been reconnected , we should set back the priority :```ifmetri
 
 # Method 2：
 Unstable NetworkSwitch for failover(In Advance, under testing) ：</br>
-1. Install Crontab : ```sudo apt install cron ```
-2. Download Script : ```wget --no-check-certificate -t 1 -T 10 -q -P /etc https://raw.githubusercontent.com/FusionPlmH/NANOPi-EC20/main/NetworkSwitch.sh && chmod a+x /etc/NetworkSwitch.sh```
-3. Setup Crontab : ```crontab -e```
-4. Add the following into crontab: ```* * * * * /bin/bash /etc/NetworkSwitch.sh ```
-5. exit and save and run : ```service cron restart```
-6. Check Script Running log :  ```cat /etc/networkswitch.log ```
+1. Create a new Service : ```nano /etc/systemd/system/NetworkSwitch.service ```
+2. Patse those into text and save it :
+```[Unit]
+Description=NetworkSwitch
+After=local-fs.target
+Before=serial-getty@.service
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash /etc/NetworkSwitch.sh
+ExecStop=/sbin/modprobe -r g_multi
+[Install]
+WantedBy=multi-user.target
+ ```
+
+4. Download Script : ```wget --no-check-certificate -t 1 -T 10 -q -P /etc https://raw.githubusercontent.com/FusionPlmH/NANOPi-EC20/main/NetworkSwitch.sh && chmod a+x /etc/NetworkSwitch.sh```
+5. Enable and Start the service during boot :```systemctl enable NetworkSwitch && systemctl start NetworkSwitch ```
+6. Check NetworkSwitch Running Status :```systemctl status NetworkSwitch ```
+7. Check Script Running log :  ```cat /etc/networkswitch.log ```
 
    
 Reference link :
