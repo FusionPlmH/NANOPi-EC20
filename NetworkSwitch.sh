@@ -33,12 +33,16 @@ if [[ $check_current_interface_1 == "ppp0" || $check_current_interface_2 == "ppp
   if [[ $google_modem == 3 || $ali_modem == 3 || $cloudflare_modem == 3 ]]; then
 	echo "Mobile External Network Connect Successfully , Check Wired Network" >> /etc/networkswitch.log
  	sleep 5s
+  	route del default eth0
+  	default_wireroute=$(cat wire_network_gateway.txt)
+	route add default gw $default_wireroute metric 0
   	rm -rf /etc/mobile_network_gateway.txt
 	ip route show default | awk '/default/ {print $3}' >/etc/mobile_network_gateway.txt
   fi
   if [[ $google_wired == 3 || $ali_wired == 3 || $cloudflare_wired == 3 ]]; then
     echo "Wired External Network Connected , Switching Back" >> /etc/networkswitch.log
-    	default_wireroute=$(cat wire_network_gateway.txt)
+    	route del default eth0
+     	default_wireroute=$(cat wire_network_gateway.txt)
 	route add default gw $default_wireroute metric 0
  	route del default ppp0
 	ifmetric eth0 100
