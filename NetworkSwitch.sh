@@ -20,6 +20,7 @@ if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth
   if [[ $google_wired != 3  || $ali_wired != 3 || $cloudflare_wired != 3 ]]; then
     echo "External Network Unreachable ， Switching to Mobile Network" >> /etc/networkswitch.log
  	route add default ppp0
+  	route del default eth0
   	ifmetric eth0 100
 	ifmetric ppp0 0
  	sleep 5s
