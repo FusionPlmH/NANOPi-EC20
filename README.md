@@ -27,6 +27,8 @@ Before=serial-getty@.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
+Restart=always
+RestartSec=60s
 ExecStart=/bin/bash /etc/NetworkSwitch.sh
 ExecStop=/sbin/modprobe -r g_multi
 [Install]
