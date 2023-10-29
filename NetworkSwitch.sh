@@ -1,12 +1,12 @@
 #!/bin/bash
 check_current_interface_1=$(route | grep '^default' | grep -o '[^ ]*$')
 check_current_interface_2=$(route | awk '/^default/{print $NF}')
-google_wired=$(ping -I eth0 -c 3 google.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-baidu_wired=$(ping -I eth0 -c 3 baidu.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-cloudflare_wired=$(ping -I eth0 -c 3 cloudflare.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-google_modem=$(ping -I "ppp0" -c 3 google.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-baidu_modem=$(ping -I "ppp0" -c 3 baidu.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
-cloudflare_modem=$(ping -I "ppp0" -c 3 cloudflare.com | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+google_wired=$(ping -I eth0 -c 3 8.8.8.8 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+114_wired=$(ping -I eth0 -c 3 114.114.114.114 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+cloudflare_wired=$(ping -I eth0 -c 3 1.1.1.1 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+google_modem=$(ping -I "ppp0" -c 3 8.8.8.8 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+114_wired=$(ping -I eth0 -c 3 114.114.114.114 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
+cloudflare_modem=$(ping -I "ppp0" -c 3 1.1.1.1 | grep 'received' | awk '{print $4}' | cut -d '/' -f 1)
 # Wired Network Connection Checking
 if [[ $check_current_interface_1 == "eth0" || $check_current_interface_2 == "eth0" ]]; then
   echo "Wired Network Selected" >> /etc/networkswitch.log
