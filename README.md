@@ -1,6 +1,6 @@
 # NANOPi-EC20
 
-**Please Edit quectel-chat-connect , line 11 "OK AT+CGDCONT=1,"IP","internet",,0,0"  before you go. My APN setting is :internet . **
+、、Please Edit quectel-chat-connect , line 11 "OK AT+CGDCONT=1,"IP","internet",,0,0"  before you go. My APN setting is :internet . 、、
 
 Setup EC20 For Connect , script will auto reboot ：</br>
 ```
