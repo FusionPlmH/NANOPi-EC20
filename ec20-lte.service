@@ -5,6 +5,8 @@ After=network.target
 [Service]
 Type=oneshot
 ExecStart=/bin/bash -c 'sleep 10 && /usr/sbin/pppd call quectel-pppd'
+ExecStart=/bin/bash -c 'sleep 10 && ip link set wws27u1i4 up'
+ExecStart=/bin/bash -c 'sleep 10 && ip link set ppp0 up'
 RemainAfterExit=yes
 
 [Install]
